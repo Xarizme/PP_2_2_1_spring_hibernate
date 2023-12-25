@@ -27,13 +27,22 @@ public class UserDaoImp implements UserDao {
       return query.getResultList();
    }
 
+   /**
+    * Сделал что бы выводился один пользователь. Может же быть что у нескольких
+    * пользователей одинакове машины
+    * Может я не правильно понял что от меня требуется?
+    */
    @Override
    @SuppressWarnings("unchecked")
-   public List<User> getUserByCar(String model, int series) {
+   public User getUserByCar(String model, int series) {
       TypedQuery<User> query=sessionFactory.getCurrentSession().createQuery("from User where car.model=:model and car.series=:series");
       query.setParameter("model",model);
       query.setParameter("series",series);
-      return query.getResultList();
+
+      for (User user : query.getResultList()) {
+         return user;
+      }
+      return null;
    }
 
 
